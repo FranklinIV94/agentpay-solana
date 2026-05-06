@@ -1,0 +1,15 @@
+{
+  "name": "agentpay-solana",
+  "version": "0.1.0",
+  "description": "Mobile-first AI agent payment manager on Solana — built for Seeker",
+  "scripts": {
+    "build": "anchor build",
+    "test": "anchor test",
+    "dev": "cd app && npm run dev",
+    "app:build": "cd app && npm run build",
+    "app:android": "cd app && npm run android"
+  },
+  "keywords": ["solana", "anchor", "agent-payments", "seeker", "ai-agents"],
+  "author": "Franklin Bryant IV",
+  "license": "MIT"
+}
