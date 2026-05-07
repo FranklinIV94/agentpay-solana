@@ -3,6 +3,7 @@ import { useConnection } from "@solana/wallet-adapter-react";
 import { Keypair, LAMPORTS_PER_SOL, PublicKey, Transaction, TransactionInstruction, SystemProgram } from "@solana/web3.js";
 import { useAgentPay } from "../hooks/useAgentPay";
 import { findAgentWalletPda, findPaymentRequestPda, AGENTPAY_PROGRAM_ID } from "@/sdk";
+import { Shield, Zap, ChevronRight, ArrowUpRight, Bot, TrendingUp, ShieldCheck, ShieldAlert, Send, Activity, Coins, AlertTriangle, CheckCircle2, XCircle, RefreshCw, Plus, Trophy, Link2, BarChart3, CreditCard, Globe, Search } from "lucide-react";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -423,7 +424,9 @@ export default function Dashboard() {
       {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur-xl bg-black/40 border-b border-indigo-800/30 px-4 py-3 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <span className="text-xl">⚡</span>
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
+            <Zap className="w-4 h-4 text-white" />
+          </div>
           <h1 className="text-lg font-bold">AgentPay</h1>
           {pending.length > 0 && <span className="bg-purple-600 text-white text-xs font-bold px-2 py-0.5 rounded-full pulse">{pending.length}</span>}
           {isLive && <span className="bg-green-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">LIVE</span>}
@@ -495,8 +498,8 @@ export default function Dashboard() {
                     </div>
                     <p className="text-indigo-300 text-xs mb-3 bg-indigo-950/50 rounded-lg px-3 py-2">{payment.reason}</p>
                     <div className="flex gap-2">
-                      <button onClick={() => handleApprove(payment)} className="flex-1 approve-button text-white py-2.5 rounded-xl font-semibold text-sm">✅ Approve</button>
-                      <button onClick={() => handleReject(payment)} className="flex-1 reject-button text-white py-2.5 rounded-xl font-semibold text-sm">❌ Reject</button>
+                      <button onClick={() => handleApprove(payment)} className="flex-1 approve-button text-white py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Approve</button>
+                      <button onClick={() => handleReject(payment)} className="flex-1 reject-button text-white py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-1.5"><XCircle className="w-4 h-4" /> Reject</button>
                     </div>
                   </div>
                 ))}
@@ -560,7 +563,7 @@ export default function Dashboard() {
       {/* SKR Staking Banner */}
       <div className="px-4 pt-4">
         <div className="card p-4 border-amber-900/30">
-          <div className="flex items-center gap-2 mb-1"><span>🪙</span><span className="font-medium text-sm">SKR Staking</span></div>
+          <div className="flex items-center gap-2 mb-1"><Coins className="w-4 h-4 text-amber-400" /><span className="font-medium text-sm">SKR Staking</span></div>
           <p className="text-indigo-300/70 text-xs mb-3">Stake SKR for 2x spending limits and premium Seeker-only analytics</p>
           <button onClick={async () => { setTxStatus("Staking SKR..."); await new Promise(r => setTimeout(r, 800)); setTxStatus("✅ Staked 5000 SKR (demo)"); setTimeout(() => setTxStatus(null), 5000); }} className="skr-button text-white py-2.5 rounded-xl font-semibold text-sm w-full">Stake SKR Tokens</button>
         </div>
@@ -569,23 +572,25 @@ export default function Dashboard() {
       {/* Cross-chain Bridge Banner */}
       <div className="px-4 pt-4">
         <div className="card p-4 border-cyan-900/30">
-          <div className="flex items-center gap-2 mb-1"><span>🔗</span><span className="font-medium text-sm">Cross-Chain x402 Bridge</span><span className="text-[10px] bg-cyan-900/50 text-cyan-400 px-1.5 py-0.5 rounded-full ml-1">Base ↔ Solana</span></div>
+          <div className="flex items-center gap-2 mb-1"><Link2 className="w-4 h-4 text-cyan-400" /><span className="font-medium text-sm">Cross-Chain x402 Bridge</span><span className="text-[10px] bg-cyan-900/50 text-cyan-400 px-1.5 py-0.5 rounded-full ml-1">Base ↔ Solana</span></div>
           <p className="text-indigo-300/70 text-xs mb-3">AI agents on Base pay via x402 → human approves on Solana Seeker</p>
           <div className="space-y-2">
             {[
-              { id: "market-feed", name: "Market Data", price: "$0.01", icon: "📈" },
-              { id: "risk-signal", name: "Fraud Risk", price: "$0.02", icon: "🛡️" },
-              { id: "sanctions-screen", name: "Sanctions", price: "$0.05", icon: "🔍" },
-              { id: "credit-bureau", name: "Credit", price: "$0.10", icon: "💳" },
-              { id: "fx-rates", name: "FX Rates", price: "$0.01", icon: "💱" },
+              { id: "market-feed", name: "Market Data", price: "$0.01", icon: BarChart3 },
+              { id: "risk-signal", name: "Fraud Risk", price: "$0.02", icon: ShieldAlert },
+              { id: "sanctions-screen", name: "Sanctions", price: "$0.05", icon: Search },
+              { id: "credit-bureau", name: "Credit", price: "$0.10", icon: CreditCard },
+              { id: "fx-rates", name: "FX Rates", price: "$0.01", icon: Globe },
             ].map((svc) => (
               <div key={svc.id} className="flex justify-between items-center bg-cyan-950/30 rounded-lg px-3 py-2 text-sm">
-                <span className="text-indigo-300">{svc.icon} {svc.name}</span>
+                <span className="text-indigo-300 flex items-center gap-1.5"><svc.icon className="w-3.5 h-3.5" /> {svc.name}</span>
                 <span className="text-cyan-400 font-mono text-xs">x402 {svc.price}</span>
               </div>
             ))}
           </div>
-          <a href="https://agent-studio-fawn.vercel.app/api/x402/data" target="_blank" rel="noopener" className="block text-center w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-2.5 rounded-xl font-semibold text-sm mt-3">View x402 API →</a>
+          <a href="https://agent-studio-fawn.vercel.app/api/x402/data" target="_blank" rel="noopener" className="block text-center w-full x402-button text-white py-2.5 rounded-xl font-semibold text-sm mt-3">
+            <span className="flex items-center justify-center gap-1.5"><Link2 className="w-3.5 h-3.5" /> View x402 API</span>
+          </a>
         </div>
       </div>
 
