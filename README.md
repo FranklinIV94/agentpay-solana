@@ -4,6 +4,28 @@
 
 **Live:** [agentpay-solana.vercel.app](https://agentpay-solana.vercel.app)
 
+## 🎬 Demo
+
+**Demo Video:** [AgentPay Animation](https://cdn.muapi.ai/outputs/0bf67131c36b44838bb09aac61def522.mp4)
+
+**Video Walkthrough:** [Screen recording on Seeker phone](https://cdn.muapi.ai/outputs/seeker_agentpay_final.mp4) *(no audio — Loom with narration coming soon)*
+
+### Screenshots
+
+| Landing / Hero | Dashboard | Payment Approved |
+|----------------|-----------|-----------------|
+| ![Hero](https://raw.githubusercontent.com/FranklinIV94/agentpay-solana/master/app/public/demo_screens/agentpay_hero.png) | ![Mobile](https://raw.githubusercontent.com/FranklinIV94/agentpay-solana/master/app/public/demo_screens/agentpay_mobile.png) | ![Approved](https://raw.githubusercontent.com/FranklinIV94/agentpay-solana/master/app/public/demo_screens/agentpay_approved.png) |
+
+## ⛓️ How We Use Solana
+
+1. **Anchor Smart Contract** — 8 on-chain instructions deployed on Solana Devnet. The program manages agent wallets, payment requests, escrow, and spending limits entirely on-chain using Program-Derived Addresses (PDAs).
+2. **Escrow Model** — When an agent calls `request_payment`, SOL is locked in the agent's PDA account. The owner must call `approve_payment` or `reject_payment` to release funds. No agent can spend without human confirmation.
+3. **Variable-Cost Capture** — For operations with uncertain costs (e.g., LLM inference), `reserve_credit` locks the maximum amount. After the operation completes, `capture_payment` settles the actual cost and refunds the difference. Agents can't overcharge.
+4. **Spending Limits** — Each agent wallet has `dailyLimitSol` and `perTxLimitSol` enforced at the program level. Even if an agent goes rogue, it can't exceed its cap.
+5. **Payment Flow:** Agent calls `request_payment` → SOL escrowed in PDA → Owner gets notification → One tap `approve_payment` → SOL transferred to recipient → Confirmed in <400ms.
+6. **Seeker Integration** — The mobile UI is optimized for Solana's Seeker phone with direct keypair integration (no wallet adapter needed). Demo auto-generates a keypair and airdrops devnet SOL.
+
+
 ## Overview
 
 AI agents are spending money — API calls, compute, data — with no mobile control. No approval flow. No spending limits. AgentPay fixes that.
