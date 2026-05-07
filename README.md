@@ -6,9 +6,9 @@
 
 ## 🎬 Demo
 
-**Demo Video:** [AgentPay Animation](https://cdn.muapi.ai/outputs/0bf67131c36b44838bb09aac61def522.mp4)
+**Demo Video:** [30s Full Demo Reel — Miami intro → AgentPay on Seeker → Agent Studio on Seeker → Process animation](https://cdn.muapi.ai/outputs/9face131c0774a3892432e2a1e917e3c_consensus_demo_compressed.mp4)
 
-**Video Walkthrough:** [Screen recording on Seeker phone](https://cdn.muapi.ai/outputs/seeker_agentpay_final.mp4) *(no audio — Loom with narration coming soon)*
+**AgentPay Animations:** [Hero animation](https://cdn.muapi.ai/outputs/0bf67131c36b44838bb09aac61def522.mp4) · [Approval animation](https://cdn.muapi.ai/outputs/4767450c968c4e3eb489463af3780a45.mp4) · [Seeker recording](https://cdn.muapi.ai/outputs/seeker_agentpay_final.mp4)
 
 ### Screenshots
 
