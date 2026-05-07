@@ -26,3 +26,6 @@ conference2_transcript.txt
 memory/
 demo/
 target/
+
+# Build output (deployed via Vercel, not needed in repo)
+app/out/
