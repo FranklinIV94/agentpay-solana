@@ -1,61 +1,75 @@
-# AgentPay Solana — Mobile-First Agent Payment Manager
+# AgentPay Solana — The Payment Layer for AI Agents
 
-**The payment layer for AI agents on Solana. Built for Seeker.**
+> Mobile-first dashboard letting humans govern AI agent spending in real-time. Built for the Solana Seeker phone.
+
+**Live:** [agentpay-solana.vercel.app](https://agentpay-solana.vercel.app)
+
+## Overview
 
 AI agents are spending money — API calls, compute, data — with no mobile control. No approval flow. No spending limits. AgentPay fixes that.
 
-Your Seeker phone becomes the command center for AI commerce.
+Your Seeker phone becomes the command center for AI commerce. Agents request payments, humans approve or reject with one tap, and Solana settles in <400ms.
 
-## Features
+Built for the **Solana Seeker Track** at Consensus 2026 Miami.
 
-- **One-tap approval** — Agent requests payment → push notification → tap approve → Solana settles
-- **Spending limits per agent** — agents can't burn your wallet
-- **Escrow & variable-cost capture** — reserve funds, settle exact amount after inference completes
-- **SKR token integration** — stake for higher limits, earn rewards for on-time approvals
-- **Leaderboard** — most active operators, most trusted agents, biggest spenders
-- **Seeker-only analytics** — premium dashboards gated to Seeker owners
-- **Mobile Wallet Adapter** — native Solana wallet connectivity
-
-## Architecture
+## How It Works
 
 ```
-┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│  Seeker Phone   │     │  Solana (Devnet) │     │  AI Agent       │
-│  AgentPay dApp  │◄────┤  Anchor Program  │◄────┤  Payment Client │
-│  (Next.js APK)  │     │  Escrow + Limits │     │  (TypeScript)   │
-└─────────────────┘     └──────────────────┘     └─────────────────┘
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│  AI Agent     │────▶│  Solana       │────▶│  Seeker Phone │
+│  Requests $   │     │  Anchor Prog  │     │  Approve/Reject│
+└──────────────┘     └──────────────┘     └──────────────┘
+                            │                      │
+                     Escrow + Limits         One-tap UI
+                     On-chain rules          Real-time alerts
 ```
 
-## Tracks
+1. **Agent requests payment** — AI agent submits tx on-chain
+2. **Human gets alert** — Seeker phone notification
+3. **One tap approve/reject** — Instant on-chain settlement
+4. **Settled** — Solana finality in <400ms
 
-- **Seeker Track** — Mobile dApp for Solana's Seeker phone
-- **AWS Track** — TBD (cloud infra for agent payment processing)
+## Core Smart Contract Operations
+
+| Instruction | Description |
+|-------------|-------------|
+| `create_agent_wallet` | Initialize agent with spending limit |
+| `request_payment` | Agent submits payment request (amount, recipient, reason) |
+| `approve_payment` | Owner taps approve on phone |
+| `reject_payment` | Owner rejects, funds stay in escrow |
+| `reserve_credit` | Lock funds for variable-cost operation |
+| `capture_payment` | Settle exact amount after operation completes |
+| `update_spending_limit` | Adjust agent's max spend |
+| `stake_skr` | Stake SKR tokens for premium features |
 
 ## Tech Stack
 
 - **Smart Contracts:** Anchor (Rust) on Solana
-- **Mobile dApp:** Next.js 14 + React Native (Android APK)
-- **Wallet:** Mobile Wallet Adapter
-- **Payments:** Solana Pay
-- **Backend:** AWS (Lambda, DynamoDB, API Gateway) for off-chain indexing
-- **Agent SDK:** TypeScript client for agents to request payments
+- **Frontend:** Next.js 14 + React 18 + Framer Motion
+- **Wallet:** Direct keypair (no adapter needed for Seeker)
+- **AI:** DeepSeek for generating payment requests
+- **Backend:** AWS Lambda for off-chain processing
+
+## Features
+
+- **One-tap approval** — Agent requests → push notification → tap approve → Solana settles
+- **Spending limits per agent** — Agents can't burn your wallet
+- **Escrow & variable-cost capture** — Reserve funds, settle exact amount after inference
+- **SKR token staking** — Stake for higher limits and premium analytics
+- **Leaderboard** — Most active operators, most trusted agents
+- **Cross-chain x402 bridge** — AI agents on Base pay via x402, human approves on Solana
 
 ## Quick Start
 
 ```bash
-# Install Anchor
-avm install latest
-avm use latest
+# Install dependencies
+cd app && npm install
 
-# Build program
-anchor build
-
-# Test
-anchor test
-
-# Run dev server
-cd app && npm run dev
+# Run development server
+npm run dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000). The app generates a demo keypair automatically.
 
 ## Project Structure
 
@@ -63,42 +77,27 @@ cd app && npm run dev
 agentpay-solana/
 ├── programs/
 │   └── agentpay/
-│       └── src/
-│           └── lib.rs          # Anchor smart contract
+│       └── src/lib.rs       # Anchor smart contract
 ├── app/
 │   ├── src/
-│   │   ├── components/         # React Native components
-│   │   ├── pages/              # App screens
-│   │   ├── hooks/              # Mobile Wallet Adapter hooks
-│   │   └── utils/              # Solana helpers
-│   └── android/                # APK build config
-├── sdk/
-│   └── src/
-│       └── index.ts            # Agent payment client SDK
-├── aws/
-│   ├── lambda/                 # Off-chain indexing functions
-│   └── infrastructure/         # CDK/Terraform
-├── tests/
-│   └── agentpay.ts             # Integration tests
-├── Anchor.toml
-└── package.json
+│   │   ├── pages/index.tsx  # Main dashboard (landing + app)
+│   │   ├── pages/api/       # API routes
+│   │   ├── hooks/           # Solana hooks
+│   │   ├── sdk/             # Agent payment client SDK
+│   │   └── styles/          # Global CSS + animations
+│   └── public/demo_screens/ # Demo screenshots
+├── sdk/                      # TypeScript SDK for agents
+├── aws/                      # Lambda + CDK infrastructure
+└── tests/                    # Integration tests
 ```
 
-## Core Smart Contract Operations
+## Consensus 2026
 
-1. **create_agent_wallet** — Initialize agent with spending limit
-2. **request_payment** — Agent submits payment request (amount, recipient, reason)
-3. **approve_payment** — Owner taps approve on phone
-4. **reject_payment** — Owner rejects, funds stay in escrow
-5. **reserve_credit** — Lock funds for variable-cost operation
-6. **capture_payment** — Settle exact amount after operation completes
-7. **update_spending_limit** — Adjust agent's max spend
-8. **stake_skr** — Stake SKR tokens for premium features
+This project was built for Consensus 2026 Miami.
+
+**Submission:** [consensus-submission.vercel.app](https://consensus-submission.vercel.app)  
+**Paired with:** [Agent Studio](https://agent-studio-fawn.vercel.app) — AI agent pipeline on Base
 
 ## License
 
 MIT
-
----
-
-Built by **Franklin Bryant IV** — [Prospyr Inc](https://simplifyingbusinesses.com) / All Lines Business Solutions

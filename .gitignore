@@ -16,3 +16,13 @@ cdk.out/
 .aws/
 *.so
 target/
+
+# Internal notes not for public
+AWS-x402-STRATEGIC-BRIEF.md
+BUILD_LOG.md
+PRESENTATION.md
+conference_transcript.txt
+conference2_transcript.txt
+memory/
+demo/
+target/
